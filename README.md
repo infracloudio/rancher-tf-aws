@@ -40,10 +40,10 @@ aws_private_key_name = "NAME_FOR_YOUR_KEYPAIR"
 ### Steps to create kubernetes on rancher 
 
 * cd to scripts folder and run `runme.sh all` This will do following steps:
-..1. Create an VPC, security groups and EC2 instance as master and start rancher server on it
-..2. Once EC2 instance is created, script waits 50 seconds for the rancher server to boot up.
-..3. API are triggered to create a rancher environment called "k8sapitest", and rancher server is activated as first host of the cluster.
-..4. Terraform is called again to create remaining EC2 instances and join them to the cluster.
+..1. Create an VPC, security groups and EC2 instance as master and start rancher server on it 
+..2. Once EC2 instance is created, script waits 50 seconds for the rancher server to boot up. 
+..3. API are triggered to create a rancher environment called "k8sapitest", and rancher server is activated as first host of the cluster. 
+..4. Terraform is called again to create remaining EC2 instances and join them to the cluster. 
 
 ### Steps to destroy the cluster 
 
