@@ -53,9 +53,9 @@ aws_private_key_name = "NAME_FOR_YOUR_KEYPAIR"
 ### Troubleshooting 
 
 To enable easy troubleshooting, the script can be called with step parameters also. 
-* `runme.sh 1` will run step 1 mentioned above
-* `runme.sh 2` will run Steps 2 and 3 mentioned above
-* `runme.sh 5` will run step 4 mentioned above
+* `runme.sh 1` will run step _i_ mentioned above
+* `runme.sh 2` will run Steps _ii_ and _iii_ mentioned above
+* `runme.sh 5` will run step _iv_ mentioned above
 
 
 
