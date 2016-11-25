@@ -6,17 +6,13 @@ if [ $(basename $PWD) != "scripts" ]; then
 fi
 
 #
-# Adding tr to fix line ending issue of windows 
+# Adding tr to fix line ending issue of windows, relying on tr as dos2unix may not be available on all platforms. 
 #
-ls -l install*sh
-echo "================================";
 for f in install*sh
 do
-tr -d '\015' <$f > $f
+tr -d '\015' <$f > ${f}_1
+mv ${f}_1 ${f}
 done
-ls -l install*sh
-echo "Press any key";
-read DKBOSE;
 
 cd ..;
 
@@ -29,8 +25,8 @@ fi
 if [ "$step" = "2" ] || [ "$step" = "all" ]
 
  then
-echo "============== Sleeping Five O =================";
-sleep 50;
+echo "============== Sleeping 60 seconds =================";
+sleep 60;
 echo "============== Awake and on to next =============" 
 masterIP=$(terraform show | grep "rancher.0.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
 
@@ -47,6 +43,7 @@ curl -g \
 "http://${masterIP}:8080/v1/projects"
 
 echo "====================  Separator ==========================";
+sleep 10;
 #
 # Add current host as API master
 #
@@ -58,6 +55,7 @@ curl \
 'http://${masterIP}:8080/v1/activesettings/1as!api.host'
 
 echo "====================  Separator ==========================";
+sleep 20;
 curl \
 -X POST \
 -H 'Accept: application/json' \
