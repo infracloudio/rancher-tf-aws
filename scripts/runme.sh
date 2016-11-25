@@ -8,10 +8,15 @@ fi
 #
 # Adding tr to fix line ending issue of windows 
 #
+ls -l install*sh
+echo "================================";
 for f in install*sh
 do
-tr -d '\015' $f > $f
+tr -d '\015' <$f > $f
 done
+ls -l install*sh
+echo "Press any key";
+read DKBOSE;
 
 cd ..;
 
