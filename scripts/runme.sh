@@ -6,7 +6,7 @@ if [ $(basename $PWD) != "scripts" ]; then
 fi
 
 #
-# Adding tr to fix line ending issue of windows, relying on tr as dos2unix may not be available on all platforms. 
+# Adding tr to fix line ending issue of windows, relying on tr as dos2unix may not be available on all platforms.
 #
 for f in install*sh
 do
@@ -14,12 +14,13 @@ tr -d '\015' <$f > ${f}_1
 mv ${f}_1 ${f}
 done
 
+
 cd ..;
 
 step=$1;
 if [ "$step" = "1" ]|| [ "$step" = "all" ]
  then
-   terraform apply -target=aws_route_table_association.public -target=aws_security_group.web -target=aws_instance.rancher[0]
+   terraform apply -target=google_compute_firewall.default -target=google_compute_instance.rancher[0]
 fi
 
 if [ "$step" = "2" ] || [ "$step" = "all" ]
@@ -28,22 +29,21 @@ if [ "$step" = "2" ] || [ "$step" = "all" ]
 echo "============== Sleeping 60 seconds =================";
 sleep 60;
 echo "============== Awake and on to next =============" 
-masterIP=$(terraform show | grep "rancher.0.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
+masterIP=$(terraform show | grep "master.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
 
 echo "Master IP is '$masterIP'";
 cat <<EOF> scripts/curlstuff.sh
 #
 # Command to create new environment
 #
-curl -g \
+curl \
 -X POST \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
--d '{"description":"Kubernetes Test via API", "name":"k8sapitest", "allowSystemRole":false, "members":[], "swarm":false, "kubernetes":true, "mesos":false, "virtualMachine":false, "publicDns":false, "servicesPortRange":null}' \
-"http://${masterIP}:8080/v1/projects"
-
-echo "====================  Separator ==========================";
+-d '{"description":"rancher k8s project", "name":"rancherk8s", "projectTemplateId":"1pt1", "allowSystemRole":false, "members":[], "virtualMachine":false, "servicesPortRange":null}' \
+"http://${masterIP}:8080/v2-beta/projects"
 sleep 10;
+echo "====================  Separator ==========================";
 #
 # Add current host as API master
 #
@@ -52,7 +52,7 @@ curl \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
 -d '{"activeValue":null, "id":"1as!api.host", "name":"api.host", "source":null, "value":"http://${masterIP}:8080"}' \
-'http://${masterIP}:8080/v1/activesettings/1as!api.host'
+'http://${masterIP}:8080/v2-beta/activesettings/1as!api.host'
 
 echo "====================  Separator ==========================";
 sleep 20;
@@ -61,7 +61,7 @@ curl \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
 -d '{"description":"new token for k8sapitest", "name":"token_k8sapitest"}' \
-'http://${masterIP}:8080/v1/projects/1a7/registrationtokens'
+"http://${masterIP}:8080/v2-beta/projects/1a7/registrationtokens"
 
 echo "====================  Separator ==========================";
 EOF

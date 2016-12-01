@@ -6,7 +6,7 @@ function jsonval {
     echo ${temp##*|}
 }
 
-json=$(curl http://${RANCH_SVR_PUB_IP}:8080/v1/registrationtokens?projectId=${RANCH_PROJECT_ID})
+json=$(curl http://${RANCH_SVR_PUB_IP}:8080/v2-beta/registrationtokens?projectId=${RANCH_PROJECT_ID})
 prop='command'
 cmd2run=`jsonval`
 echo "Value of command to run is $cmd2run";
