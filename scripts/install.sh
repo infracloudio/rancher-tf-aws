@@ -14,7 +14,7 @@ apt-get update
 apt-cache policy docker-engine
 apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
 apt-get update
-apt-get install -y docker-engine=1.10.3-0~trusty
+apt-get install -y docker-engine=1.12.3-0~trusty
 
 service docker start
 docker run hello-world
