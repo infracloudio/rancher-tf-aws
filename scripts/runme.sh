@@ -26,12 +26,24 @@ fi
 if [ "$step" = "2" ] || [ "$step" = "all" ]
 
  then
-echo "============== Sleeping 60 seconds =================";
-sleep 60;
-echo "============== Awake and on to next =============" 
-masterIP=$(terraform show | grep "master.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
 
+masterIP=$(terraform show | grep "master.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
 echo "Master IP is '$masterIP'";
+
+#
+# Checking if rancher server is UP or not after every 5 * n seconds for 10 iterations
+#
+for n in 1 2 3 4 5 6 7 8 9 10
+do
+   curl http://${masterIP}:8080/v2-beta/
+   if [ $? -ne 0 ]; then
+      echo "Connecting Rancher Server Attempt $n (Max 10) : Sleeping for $(( $n * 5 )) seconds";
+      sleep $(( $n * 5 ));
+   else
+	  break;
+   fi
+done
+
 cat <<EOF> scripts/curlstuff.sh
 #
 # Command to create new environment
