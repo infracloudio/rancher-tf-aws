@@ -52,7 +52,7 @@ curl \
 -X POST \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
--d '{"description":"rancher k8s project", "name":"rancherk8s", "projectTemplateId":"1pt1", "allowSystemRole":false, "members":[], "virtualMachine":false, "servicesPortRange":null}' \
+-d '{"description":"rancher k8s project", "name":"rancherk8s", "projectTemplateId":"1pt2", "allowSystemRole":false, "members":[], "virtualMachine":false, "servicesPortRange":null}' \
 "http://${masterIP}:8080/v2-beta/projects"
 sleep 10;
 echo "====================  Separator ==========================";
