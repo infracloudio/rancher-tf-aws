@@ -20,14 +20,14 @@ cd ..;
 step=$1;
 if [ "$step" = "1" ]|| [ "$step" = "all" ]
  then
-   terraform apply -target=google_compute_firewall.default -target=google_compute_instance.rancher[0]
+   terraform apply -target=aws_route_table_association.public -target=aws_security_group.web -target=aws_instance.rancher[0]
 fi
 
 if [ "$step" = "2" ] || [ "$step" = "all" ]
 
  then
 
-masterIP=$(terraform show | grep "master.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
+masterIP=$(terraform show | grep "rancher.0.ip" | cut -d"=" -f2 | tr -d '[:space:]' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")
 echo "Master IP is '$masterIP'";
 
 #
