@@ -43,19 +43,31 @@ do
 	  break;
    fi
 done
+#
+# Now that k8s master is UP, fetch project ID for kubernetes
+#
+k8spid=$(curl "http://${masterIP}:8080/v2-beta/projectTemplates?name=kubernetes" | jq '.data[0].id');
 
 cat <<EOF> scripts/curlstuff.sh
 #
-# Command to create new environment
+# Command to create new environment with kubernetes
 #
 curl \
 -X POST \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
--d '{"description":"rancher k8s project", "name":"rancherk8s", "projectTemplateId":"1pt2", "allowSystemRole":false, "members":[], "virtualMachine":false, "servicesPortRange":null}' \
+-d '{"description":"rancher k8s project", "name":"rancherk8s", "projectTemplateId":${k8spid}, "allowSystemRole":false, "members":[], "virtualMachine":false, "servicesPortRange":null}' \
 "http://${masterIP}:8080/v2-beta/projects"
 sleep 10;
 echo "====================  Separator ==========================";
+#
+# Finding the project ID that was created 
+#
+ranchPid=\$(curl http://${masterIP}:8080/v2-beta/projects/?name=rancherk8s  | jq '.data[0].id');
+#
+# removing doublequotes from ranchPid
+#
+ranchPid=\$(echo \$ranchPid | sed 's#\"##g');
 #
 # Add current host as API master
 #
@@ -73,7 +85,7 @@ curl \
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
 -d '{"description":"new token for k8sapitest", "name":"token_k8sapitest"}' \
-"http://${masterIP}:8080/v2-beta/projects/1a7/registrationtokens"
+"http://${masterIP}:8080/v2-beta/projects/\${ranchPid}/registrationtokens"
 
 echo "====================  Separator ==========================";
 EOF

@@ -28,5 +28,6 @@ else
 #
 # Agent ADD command here, capture Master IP in $2
 #
-chmod 755 /tmp/installAgent.sh && /tmp/installAgent.sh $2 1a7
+chmod 755 /tmp/installAgent.sh && /tmp/installAgent.sh $2
+echo "pip install etc here"
 fi
