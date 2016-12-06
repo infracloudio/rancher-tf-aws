@@ -21,6 +21,7 @@ You will get following resources created:
 * Access Key and Secret Access Key for above account
 * ssh keypair generated for your user
 * terminal which understands bash (Mac users can open regular command prompt), while Windows users need a bash emulator like [gitbash](https://git-scm.com/download/win) or [cygwin](https://cygwin.com/install.html) or [MobaXterm] (http://mobaxterm.mobatek.net/download.html)
+* jq installed and available in PATH variable. You can download jq for your platform [here](https://stedolan.github.io/jq/download/)
 
 ### One time setup steps
 
