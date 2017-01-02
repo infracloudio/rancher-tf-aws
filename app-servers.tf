@@ -2,7 +2,7 @@
 resource "aws_instance" "rancher" {
   count = 5
   ami = "${lookup(var.amis, var.region)}"
-  instance_type = "t2.micro"
+  instance_type = "${var.aws_machine_type}"
   subnet_id = "${aws_subnet.public.id}"
   vpc_security_group_ids = ["${aws_security_group.web.id}"]
   key_name = "${aws_key_pair.deployer.key_name}"
@@ -22,10 +22,7 @@ resource "aws_instance" "rancher" {
     source = "scripts/install.sh"
     destination = "/tmp/install.sh"
   }
-  provisioner "file" {
-    source = "scripts/installAgent.sh"
-    destination = "/tmp/installAgent.sh"
-  }
+  
   provisioner "remote-exec" {
     inline = [
     "chmod +x /tmp/install.sh",

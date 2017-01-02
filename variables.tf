@@ -28,9 +28,10 @@ variable "private_subnet_cidr" {
 
 /* Ubuntu 14.04 amis by region */
 variable "amis" {
+  type = "map"
   description = "Base AMI to launch the instances with"
   default = {
-    us-west-1 = "ami-049d8641" 
+    us-west-1 = "ami-049d8641"
     us-east-1 = "ami-a6b8e7ce"
     ap-southeast-1 = "ami-21d30f42"
     eu-central-1 = "ami-26c43149"
@@ -42,4 +43,8 @@ variable "aws_public_key" {
 
 variable "aws_private_key_name" {
 	description = "Name of the private key to be used for connection"
+}
+
+variable "aws_machine_type" {
+  default = "t2.medium"
 }

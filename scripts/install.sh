@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-echo "Value of Param1 is $1"
+echo "Value of Param1 is $1";
 echo "Value of Param2 is $2"
 #
 # Installing Docker first 
@@ -19,15 +19,24 @@ apt-get install -y docker-engine=1.12.3-0~trusty
 service docker start
 docker run hello-world
 if [[ "$1" == "0" ]]; then
-docker run -d --restart=unless-stopped -p 8080:8080 --name rancherserver rancher/server
-docker logs rancherserver
 #
-# Run curl to create project with kubernetes
+# Start rancher server
 #
+    docker run -d --restart=unless-stopped -p 8080:8080 --name rancherserver rancher/server
+    docker logs rancherserver
+#
+# Once server is up, run API via container to create project and generate token
+#
+    docker run -e "RANCHER_SERVER_IP=$2" -e "STEP=all" harshals/rsapi
+
 else
 #
-# Agent ADD command here, capture Master IP in $2
+# Run rsapi container in agent mode to generate token and run it
 #
-chmod 755 /tmp/installAgent.sh && /tmp/installAgent.sh $2
-echo "pip install etc here"
+    cmd=$(docker run -e "RANCHER_SERVER_IP=$2" -e "STEP=6" harshals/rsapi | tail -n 1);
+	if [[ "$(echo $cmd | cut -c 1-11)" == "sudo docker" ]]; then
+	    eval $cmd;
+	else
+	    echo "ERROR : Unable to get token from rancher server";
+	fi
 fi
