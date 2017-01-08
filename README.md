@@ -36,6 +36,10 @@ region = "YOUR_REGION"
 # Add contents of your public key below
 aws_public_key = "CONTENTS_OF_YOUR_PUBLIC_KEY" 
 aws_private_key_name = "NAME_FOR_YOUR_KEYPAIR"
+#
+# The default k8s project name is "k8srancher", if you want to overwrite this name,
+# uncomment the line below and use your own name
+#rs_proj_name = "YOUR_OWN_PROJECT_NAME"
 ~~~
 
 ### Steps to create kubernetes on rancher 
@@ -43,7 +47,7 @@ aws_private_key_name = "NAME_FOR_YOUR_KEYPAIR"
 * Run `terraform apply` This will do following steps:
   1. Create an VPC, security groups and EC2 instance as master and start rancher server on it 
   2. Once EC2 instance is created, script waits 50 seconds for the rancher server to boot up. 
-  3. API are triggered to create a rancher environment called "rancherk8s", and rancher server is activated as first host of the cluster.
+  3. API are triggered to create a rancher environment called "k8srancher" (or your own defined name if you have overwritten the default in terraform.tfvars), and rancher server is activated as first host of the cluster.
   4. Terraform is called again to create remaining EC2 instances and join them to the cluster. 
 
 ### Steps to destroy the cluster 
