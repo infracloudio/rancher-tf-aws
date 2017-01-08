@@ -46,7 +46,7 @@ variable "aws_private_key_name" {
 }
 
 variable "aws_machine_type" {
-  default = "t2.medium"
+  default = "t2.large"
 }
 
 variable "k8s_node_count" {

@@ -5,3 +5,4 @@
 ssh/harshals*
 scripts/curlstuff.sh
 *id_rsa*
+*.tfvars
