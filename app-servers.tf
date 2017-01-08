@@ -1,6 +1,6 @@
 /* App servers */
 resource "aws_instance" "rancher" {
-  count = 5
+  count = "${var.k8s_node_count}"
   ami = "${lookup(var.amis, var.region)}"
   instance_type = "${var.aws_machine_type}"
   subnet_id = "${aws_subnet.public.id}"
@@ -26,7 +26,7 @@ resource "aws_instance" "rancher" {
   provisioner "remote-exec" {
     inline = [
     "chmod +x /tmp/install.sh",
-    "sudo /tmp/install.sh ${count.index} ${aws_instance.rancher.0.public_ip}"
+    "sudo /tmp/install.sh ${count.index} ${aws_instance.rancher.0.public_ip} ${var.rs_proj_name}"
     ]
   }
 }

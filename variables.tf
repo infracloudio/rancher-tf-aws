@@ -31,7 +31,7 @@ variable "amis" {
   type = "map"
   description = "Base AMI to launch the instances with"
   default = {
-    us-west-1 = "ami-049d8641"
+    us-west-1 = "ami-7790c617"
     us-east-1 = "ami-a6b8e7ce"
     ap-southeast-1 = "ami-21d30f42"
     eu-central-1 = "ami-26c43149"
@@ -46,5 +46,15 @@ variable "aws_private_key_name" {
 }
 
 variable "aws_machine_type" {
-  default = "t2.medium"
+  default = "t2.large"
+}
+
+variable "k8s_node_count" {
+  description = "Number of Nodes in k8s cluster including master node"
+  default = 4
+}
+
+variable "rs_proj_name" {
+  description = "Name of the rancher project"
+  default = "k8srancher"
 }
