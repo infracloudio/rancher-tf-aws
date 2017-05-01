@@ -1,0 +1,15 @@
+provider "rancher" {
+  api_url    = "http://${aws_instance.rancher-master.public_ip}:8080"
+}
+
+resource "rancher_environment" "default" {
+  name = "${var.rs_proj_name}"
+  description = "The staging environment"
+  orchestration = "kubernetes"
+}
+
+resource "rancher_registration_token" "default" {
+  name           = "rancher_k8s_token"
+  description    = "Registration token for the kubernetes environment"
+  environment_id = "${rancher_environment.default.id}"
+}

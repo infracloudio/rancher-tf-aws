@@ -49,9 +49,13 @@ variable "aws_machine_type" {
   default = "t2.large"
 }
 
+variable "master_aws_machine_type" {
+  default = "t2.medium"
+}
+
 variable "k8s_node_count" {
   description = "Number of Nodes in k8s cluster including master node"
-  default = 4
+  default = 3
 }
 
 variable "rs_proj_name" {
